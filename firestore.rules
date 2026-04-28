@@ -1,0 +1,40 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Primitive Helpers
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() { return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+
+    function isValidSiteConfig(data) {
+      return data.keys().hasAll(['heroTitle', 'heroSubtitle', 'whatsappNumber', 'themeColor']) &&
+             data.keys().size() == 4 &&
+             data.heroTitle is string && data.heroTitle.size() <= 200 &&
+             data.heroSubtitle is string && data.heroSubtitle.size() <= 1000 &&
+             data.whatsappNumber is string && data.whatsappNumber.size() <= 20 &&
+             data.themeColor is string && data.themeColor.size() <= 20;
+    }
+
+    // Site Config
+    match /site/{docId} {
+      allow read: if true; // Publicly readable
+      allow create, update: if isAdmin() && docId == 'config' && isValidSiteConfig(incoming());
+    }
+
+    // Admins
+    match /admins/{userId} {
+      allow read: if isAdmin() || (isSignedIn() && request.auth.uid == userId);
+      allow create: if isSignedIn() && request.auth.uid == userId && (
+        (request.auth.token.email == 'tokioyoshino244@gmail.com' && request.auth.token.email_verified == true) ||
+        (request.auth.token.email == 'admin@zellouis.art')
+      );
+    }
+  }
+}

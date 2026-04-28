@@ -1,0 +1,35 @@
+{
+  "entities": {
+    "SiteConfig": {
+      "title": "Site Configuration",
+      "description": "Global configuration for the website including text, images, and theme colors.",
+      "type": "object",
+      "properties": {
+        "heroTitle": { "type": "string" },
+        "heroSubtitle": { "type": "string" },
+        "whatsappNumber": { "type": "string" },
+        "themeColor": { "type": "string" }
+      },
+      "required": ["heroTitle", "heroSubtitle", "whatsappNumber", "themeColor"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Admin users allowed to edit configuration.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" }
+      },
+      "required": ["email"]
+    }
+  },
+  "firestore": {
+    "/site/{docId}": {
+      "schema": { "$ref": "#/entities/SiteConfig" },
+      "description": "Contains a single document 'config' for the site configuration."
+    },
+    "/admins/{userId}": {
+      "schema": { "$ref": "#/entities/Admin" },
+      "description": "Contains documents mapping to admin user IDs."
+    }
+  }
+}
