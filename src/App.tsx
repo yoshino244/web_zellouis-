@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import MainLayout from './components/MainLayout';
 import Admin from './pages/Admin';
 import Terms from './pages/Terms';
@@ -16,7 +16,7 @@ export default function App() {
   return (
     <AuthProvider>
       <ConfigProvider>
-        <BrowserRouter>
+        <HashRouter>
           <div className="min-h-screen bg-[#0c0c0e] text-zinc-50 theme-selection">
             <Routes>
               <Route path="/" element={<MainLayout />} />
@@ -25,7 +25,7 @@ export default function App() {
               <Route path="/privacy" element={<Privacy />} />
             </Routes>
           </div>
-        </BrowserRouter>
+        </HashRouter>
       </ConfigProvider>
     </AuthProvider>
   );
