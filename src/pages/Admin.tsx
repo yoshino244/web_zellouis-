@@ -339,16 +339,16 @@ export default function Admin() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white p-8 pb-32">
-      <div className="max-w-3xl mx-auto space-y-12">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Edit Tampilan Website</h1>
-          <button onClick={logOut} className="text-zinc-400 hover:text-white px-4 py-2 border border-zinc-700 rounded-lg">
+    <div className="min-h-screen bg-zinc-950 text-white p-4 md:p-8 pb-32">
+      <div className="max-w-3xl mx-auto space-y-8 md:space-y-12">
+        <div className="flex flex-col sm:flex-row gap-4 justify-between sm:items-center">
+          <h1 className="text-2xl md:text-3xl font-bold">Edit Tampilan Website</h1>
+          <button onClick={logOut} className="text-zinc-400 hover:text-white px-4 py-2 border border-zinc-700 rounded-lg whitespace-nowrap self-start sm:self-auto">
             Log Out
           </button>
         </div>
 
-        <form onSubmit={handleSave} className="bg-zinc-900 border border-white/10 rounded-3xl p-8 space-y-6">
+        <form onSubmit={handleSave} className="bg-zinc-900 border border-white/10 rounded-2xl md:rounded-3xl p-5 md:p-8 space-y-6">
           <h2 className="text-xl font-bold text-white border-b border-white/10 pb-4 mb-6">Pengaturan Konten & Tema</h2>
 
           {error && <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-4 rounded-xl">{error}</div>}
@@ -659,7 +659,7 @@ export default function Admin() {
         </form>
 
         {/* Gallery Management Section */}
-        <div className="bg-zinc-900 border border-white/10 rounded-3xl p-8 space-y-6">
+        <div className="bg-zinc-900 border border-white/10 rounded-2xl md:rounded-3xl p-5 md:p-8 space-y-6">
           <h2 className="text-xl font-bold text-white border-b border-white/10 pb-4 mb-6">Kelola Gallery</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -754,7 +754,7 @@ export default function Admin() {
           </div>
         </div>
 
-        <form onSubmit={handleChangePassword} className="bg-zinc-900 border border-white/10 rounded-3xl p-8 space-y-6">
+        <form onSubmit={handleChangePassword} className="bg-zinc-900 border border-white/10 rounded-2xl md:rounded-3xl p-5 md:p-8 space-y-6">
           <h2 className="text-xl font-bold text-white border-b border-white/10 pb-4 mb-6">Security Settings</h2>
           
           {passwordMessage && (

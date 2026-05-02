@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Maximize2, X } from 'lucide-react';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
@@ -23,6 +23,8 @@ export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [artworks, setArtworks] = useState<Artwork[]>([]);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const q = query(collection(db, 'gallery'), orderBy('createdAt', 'desc'));
@@ -35,6 +37,25 @@ export default function Gallery() {
 
     return () => unsub();
   }, []);
+
+  // Auto-scroll loop
+  useEffect(() => {
+    if (!carouselRef.current) return;
+    const interval = setInterval(() => {
+      if (isHovered) return;
+      if (carouselRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+        if (scrollLeft + clientWidth >= scrollWidth - 10) {
+          carouselRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          const itemWidth = clientWidth > 768 ? 424 : clientWidth * 0.85; 
+          carouselRef.current.scrollBy({ left: itemWidth, behavior: 'smooth' });
+        }
+      }
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [isHovered]);
 
   const filteredArtwork = artworks.filter(
     (art) => activeCategory === 'All' || art.category === activeCategory
@@ -89,8 +110,17 @@ export default function Gallery() {
           ))}
         </div>
 
-        {/* Masonry-like Grid Layout */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Carousel Layout */}
+        <div 
+          ref={carouselRef}
+          className="flex gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-8"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onTouchStart={() => setIsHovered(true)}
+          onTouchEnd={() => {
+            setTimeout(() => setIsHovered(false), 2000);
+          }}
+        >
           <AnimatePresence mode="popLayout">
             {filteredArtwork.map((art, index) => (
               <motion.div
@@ -104,7 +134,7 @@ export default function Gallery() {
                   transition: { duration: 0.4, ease: "easeInOut" }
                 }}
                 transition={{ duration: 0.5, delay: index * 0.05, ease: "easeOut" }}
-                className={`group relative rounded-2xl overflow-hidden cursor-pointer bg-zinc-900 border border-white/5 ${art.aspect}`}
+                className={`flex-shrink-0 w-[85vw] sm:w-[300px] md:w-[400px] snap-center group relative rounded-2xl overflow-hidden cursor-pointer bg-zinc-900 border border-white/5 ${art.aspect}`}
                 onClick={() => setSelectedImage(art.src)}
               >
                 <img
@@ -127,7 +157,7 @@ export default function Gallery() {
               </motion.div>
             ))}
           </AnimatePresence>
-        </motion.div>
+        </div>
       </div>
 
       {/* Lightbox */}

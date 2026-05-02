@@ -1,9 +1,23 @@
+import React, { useRef } from 'react';
 import { motion } from 'motion/react';
-import { Palette, Wand2, Frame, CheckCircle2 } from 'lucide-react';
+import { Palette, Wand2, Frame, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useConfig } from '../context/ConfigContext';
 
 export default function Services() {
   const config = useConfig();
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+    }
+  };
   
   // Use packages if available, otherwise fallback to backward compatible version
   // Actually we have them in defaultConfig so config.packages will always be there
@@ -26,12 +40,20 @@ export default function Services() {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="font-mono text-xs tracking-widest uppercase mb-2 block" style={{ color: 'var(--theme-color, orange)' }}>Pricing & Process</span>
           <h2 className="text-4xl md:text-5xl font-sans font-bold text-white mb-6">Commission Structure</h2>
-          <p className="text-zinc-400 text-lg leading-relaxed">
+          <p className="text-zinc-400 text-lg leading-relaxed mb-8">
             Every piece is crafted with meticulous attention to detail. Select a package that fits your needs, or contact me for bespoke projects requiring commercial use.
           </p>
+          <div className="flex md:hidden justify-center gap-4">
+             <button onClick={scrollLeft} className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 active:scale-95 transition-all">
+                <ChevronLeft className="w-6 h-6 text-white" />
+             </button>
+             <button onClick={scrollRight} className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 active:scale-95 transition-all">
+                <ChevronRight className="w-6 h-6 text-white" />
+             </button>
+          </div>
         </div>
 
-        <div className={`flex md:grid ${gridColsClass} gap-8 overflow-x-auto md:overflow-visible pb-8 snap-x snap-mandatory no-scrollbar`}>
+        <div ref={scrollRef} className={`flex md:grid ${gridColsClass} gap-8 overflow-x-auto md:overflow-visible pb-8 snap-x snap-mandatory no-scrollbar`}>
           {packages.map((pkg, index) => {
             const Icon = icons[index % icons.length];
             const features = (pkg.features || '').split('\n').filter(Boolean);
@@ -90,9 +112,9 @@ export default function Services() {
           <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-bold border italic mb-4" style={{ backgroundColor: 'transparent', color: 'var(--theme-color, orange)', borderColor: 'var(--theme-color, orange)' }}>Z</div>
           <h4 className="text-xl font-bold text-white mb-2">Need something different?</h4>
           <p className="text-zinc-400 text-sm max-w-lg mb-6">I also take on commercial branding, album covers, and large-scale studio work.</p>
-          <a href="#contact" className="inline-block font-bold uppercase tracking-widest pb-1 border-b-2 transition-colors text-sm hover:opacity-80" style={{ color: 'var(--theme-color, orange)', borderColor: 'var(--theme-color, orange)' }}>
+          <span className="inline-block font-bold uppercase tracking-widest pb-1 border-b-2 text-sm" style={{ color: 'var(--theme-color, orange)', borderColor: 'var(--theme-color, orange)' }}>
             Request Custom Quote
-          </a>
+          </span>
         </div>
       </div>
     </section>
