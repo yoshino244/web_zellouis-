@@ -33,6 +33,15 @@ html {
   scroll-behavior: smooth;
 }
 
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+}
+
 @keyframes blob {
   0% {
     transform: translate(0px, 0px) scale(1);
@@ -46,4 +55,9 @@ html {
   100% {
     transform: translate(0px, 0px) scale(1);
   }
+}
+
+.theme-selection *::selection {
+  background-color: color-mix(in srgb, var(--theme-color, orange) 30%, transparent);
+  color: inherit;
 }

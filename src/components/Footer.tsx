@@ -1,4 +1,4 @@
-import { Paintbrush } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
@@ -7,18 +7,18 @@ export default function Footer() {
         
         <div className="flex items-center gap-2">
           <span className="font-sans text-xl tracking-tighter font-bold text-white uppercase">
-            ZELLOUIS<span className="text-orange-500">.ART</span>
+            ZELLOUIS<span style={{ color: 'var(--theme-color, orange)' }}>.ART</span>
           </span>
         </div>
 
         <div className="text-zinc-500 text-sm font-medium text-center md:text-left">
           &copy; {new Date().getFullYear()} ZELLOUIS ART. All rights reserved. <br className="md:hidden" />
-          <span className="hidden md:inline"> | </span> Designed with purpose.
+          <span className="hidden md:inline"> | </span> Designed by erzeet_
         </div>
 
         <div className="flex gap-6">
-          <a href="#" className="text-zinc-500 hover:text-white transition-colors text-sm font-medium">Terms</a>
-          <a href="#" className="text-zinc-500 hover:text-white transition-colors text-sm font-medium">Privacy</a>
+          <Link to="/terms" className="text-zinc-500 hover:text-white transition-colors text-sm font-medium">Terms</Link>
+          <Link to="/privacy" className="text-zinc-500 hover:text-white transition-colors text-sm font-medium">Privacy</Link>
         </div>
       </div>
     </footer>

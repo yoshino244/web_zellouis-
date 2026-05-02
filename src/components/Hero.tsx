@@ -33,7 +33,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-5xl sm:text-6xl lg:text-7xl font-sans font-bold text-white leading-[1.1] tracking-tight whitespace-pre-wrap"
+            className="text-4xl sm:text-6xl lg:text-7xl font-sans font-bold text-white leading-[1.1] tracking-tight whitespace-pre-wrap"
           >
             {config.heroTitle}
           </motion.h1>
@@ -57,8 +57,8 @@ export default function Hero() {
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 text-black px-8 py-4 rounded-full font-bold uppercase tracking-wider hover:opacity-90 transition-all duration-300 group"
-              style={{ backgroundColor: 'var(--theme-color, orange)' }}
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold uppercase tracking-wider hover:opacity-90 transition-all duration-300 group"
+              style={{ backgroundColor: 'var(--theme-color, orange)', color: 'var(--theme-text-color, black)' }}
             >
               Order via WhatsApp
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -83,7 +83,7 @@ export default function Hero() {
             {/* Overlay gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
             <img
-              src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+              src={config.heroImage}
               alt="Conceptual Digital Art displaying vivid colors and surreal elements"
               className="w-full h-full object-cover"
             />
@@ -91,8 +91,8 @@ export default function Hero() {
             {/* Floating details */}
             <div className="absolute bottom-6 left-6 right-6 z-20 flex justify-between items-end">
               <div>
-                <p className="font-mono text-xs mb-2 uppercase tracking-widest" style={{ color: 'var(--theme-color, orange)' }}>Featured Art</p>
-                <p className="text-white font-sans font-bold text-2xl">"Ethereal Dreams"</p>
+                <p className="font-mono text-xs mb-2 uppercase tracking-widest" style={{ color: 'var(--theme-color, orange)' }}>{config.featuredArtTag}</p>
+                <p className="text-white font-sans font-bold text-2xl">{config.featuredArtTitle}</p>
               </div>
             </div>
           </div>

@@ -52,8 +52,8 @@ export default function Navbar() {
               ))}
               <a
                 href="#contact"
-                className="text-black px-6 py-2.5 rounded-full text-sm font-bold uppercase tracking-wider transition-colors duration-300 hover:opacity-90"
-                style={{ backgroundColor: 'var(--theme-color, orange)' }}
+                className="px-6 py-2.5 rounded-full text-sm font-bold uppercase tracking-wider transition-colors duration-300 hover:opacity-90"
+                style={{ backgroundColor: 'var(--theme-color, orange)', color: 'var(--theme-text-color, black)' }}
               >
                 Let's Talk
               </a>

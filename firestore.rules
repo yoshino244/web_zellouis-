@@ -14,18 +14,66 @@ service cloud.firestore {
     function existing() { return resource.data; }
 
     function isValidSiteConfig(data) {
-      return data.keys().hasAll(['heroTitle', 'heroSubtitle', 'whatsappNumber', 'themeColor']) &&
-             data.keys().size() == 4 &&
+      return data.keys().hasAll([
+        'heroTitle', 'heroSubtitle', 'whatsappNumber', 'themeColor', 'heroImage', 'featuredArtTitle', 'featuredArtTag',
+        'contactLabel1', 'contactLink1', 'contactLabel2', 'contactLink2', 'contactLabel3', 'contactLink3',
+        'service1Title', 'service1Price', 'service1Desc', 'service1Features',
+        'service2Title', 'service2Price', 'service2Desc', 'service2Features',
+        'service3Title', 'service3Price', 'service3Desc', 'service3Features'
+      ]) &&
+             data.keys().size() == 25 &&
              data.heroTitle is string && data.heroTitle.size() <= 200 &&
              data.heroSubtitle is string && data.heroSubtitle.size() <= 1000 &&
-             data.whatsappNumber is string && data.whatsappNumber.size() <= 20 &&
-             data.themeColor is string && data.themeColor.size() <= 20;
+             data.whatsappNumber is string && data.whatsappNumber.size() <= 50 &&
+             data.themeColor is string && data.themeColor.size() <= 50 &&
+             data.heroImage is string && data.heroImage.size() <= 1500000 &&
+             data.featuredArtTitle is string && data.featuredArtTitle.size() <= 200 &&
+             data.featuredArtTag is string && data.featuredArtTag.size() <= 100 &&
+             data.contactLabel1 is string && data.contactLabel1.size() <= 200 &&
+             data.contactLink1 is string && data.contactLink1.size() <= 1000 &&
+             data.contactLabel2 is string && data.contactLabel2.size() <= 200 &&
+             data.contactLink2 is string && data.contactLink2.size() <= 1000 &&
+             data.contactLabel3 is string && data.contactLabel3.size() <= 200 &&
+             data.contactLink3 is string && data.contactLink3.size() <= 1000 &&
+             data.service1Title is string && data.service1Title.size() <= 200 &&
+             data.service1Price is string && data.service1Price.size() <= 100 &&
+             data.service1Desc is string && data.service1Desc.size() <= 1500 &&
+             data.service1Features is string && data.service1Features.size() <= 2000 &&
+             data.service2Title is string && data.service2Title.size() <= 200 &&
+             data.service2Price is string && data.service2Price.size() <= 100 &&
+             data.service2Desc is string && data.service2Desc.size() <= 1500 &&
+             data.service2Features is string && data.service2Features.size() <= 2000 &&
+             data.service3Title is string && data.service3Title.size() <= 200 &&
+             data.service3Price is string && data.service3Price.size() <= 100 &&
+             data.service3Desc is string && data.service3Desc.size() <= 1500 &&
+             data.service3Features is string && data.service3Features.size() <= 2000;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidArtwork(data) {
+      return data.keys().hasAll(['title', 'category', 'src', 'aspect', 'createdAt']) &&
+             data.keys().size() == 5 &&
+             data.title is string && data.title.size() <= 200 &&
+             data.category is string && data.category.size() <= 100 &&
+             data.src is string && data.src.size() <= 1500000 &&
+             data.aspect is string && data.aspect.size() <= 40 &&
+             data.createdAt is number;
     }
 
     // Site Config
     match /site/{docId} {
       allow read: if true; // Publicly readable
-      allow create, update: if isAdmin() && docId == 'config' && isValidSiteConfig(incoming());
+      allow create, update: if isAdmin() && docId == 'config';
+    }
+
+    // Gallery
+    match /gallery/{artworkId} {
+      allow list: if true;
+      allow get: if true;
+      allow create, update, delete: if isAdmin();
     }
 
     // Admins

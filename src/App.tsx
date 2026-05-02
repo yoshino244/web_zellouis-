@@ -3,41 +3,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Gallery from './components/Gallery';
-import Services from './components/Services';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
+import MainLayout from './components/MainLayout';
 import Admin from './pages/Admin';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
 import { AuthProvider } from './context/AuthContext';
 import { ConfigProvider, useConfig } from './context/ConfigContext';
-
-function MainLayout() {
-  const config = useConfig();
-  
-  return (
-    <div style={{ '--theme-color': config.themeColor } as React.CSSProperties}>
-      <Navbar />
-      <Hero />
-      <Gallery />
-      <Services />
-      <Contact />
-      <Footer />
-    </div>
-  );
-}
 
 export default function App() {
   return (
     <AuthProvider>
       <ConfigProvider>
         <BrowserRouter>
-          <div className="min-h-screen bg-[#0c0c0e] text-zinc-50 selection:bg-orange-500/30">
+          <div className="min-h-screen bg-[#0c0c0e] text-zinc-50 theme-selection">
             <Routes>
               <Route path="/" element={<MainLayout />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy" element={<Privacy />} />
             </Routes>
           </div>
         </BrowserRouter>

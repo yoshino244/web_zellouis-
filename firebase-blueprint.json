@@ -8,9 +8,49 @@
         "heroTitle": { "type": "string" },
         "heroSubtitle": { "type": "string" },
         "whatsappNumber": { "type": "string" },
-        "themeColor": { "type": "string" }
+        "themeColor": { "type": "string" },
+        "heroImage": { "type": "string" },
+        "featuredArtTitle": { "type": "string" },
+        "featuredArtTag": { "type": "string" },
+        "contactLabel1": { "type": "string" },
+        "contactLink1": { "type": "string" },
+        "contactLabel2": { "type": "string" },
+        "contactLink2": { "type": "string" },
+        "contactLabel3": { "type": "string" },
+        "contactLink3": { "type": "string" },
+        "service1Title": { "type": "string" },
+        "service1Price": { "type": "string" },
+        "service1Desc": { "type": "string" },
+        "service1Features": { "type": "string" },
+        "service2Title": { "type": "string" },
+        "service2Price": { "type": "string" },
+        "service2Desc": { "type": "string" },
+        "service2Features": { "type": "string" },
+        "service3Title": { "type": "string" },
+        "service3Price": { "type": "string" },
+        "service3Desc": { "type": "string" },
+        "service3Features": { "type": "string" }
       },
-      "required": ["heroTitle", "heroSubtitle", "whatsappNumber", "themeColor"]
+      "required": [
+        "heroTitle", "heroSubtitle", "whatsappNumber", "themeColor", "heroImage", "featuredArtTitle", "featuredArtTag",
+        "contactLabel1", "contactLink1", "contactLabel2", "contactLink2", "contactLabel3", "contactLink3",
+        "service1Title", "service1Price", "service1Desc", "service1Features",
+        "service2Title", "service2Price", "service2Desc", "service2Features",
+        "service3Title", "service3Price", "service3Desc", "service3Features"
+      ]
+    },
+    "Artwork": {
+      "title": "Artwork",
+      "description": "An artwork item for the gallery.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "src": { "type": "string" },
+        "aspect": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["title", "category", "src", "aspect", "createdAt"]
     },
     "Admin": {
       "title": "Admin",
@@ -26,6 +66,10 @@
     "/site/{docId}": {
       "schema": { "$ref": "#/entities/SiteConfig" },
       "description": "Contains a single document 'config' for the site configuration."
+    },
+    "/gallery/{artworkId}": {
+      "schema": { "$ref": "#/entities/Artwork" },
+      "description": "Contains artworks for the gallery."
     },
     "/admins/{userId}": {
       "schema": { "$ref": "#/entities/Admin" },
