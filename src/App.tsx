@@ -23,6 +23,8 @@ export default function App() {
               <Route path="/admin" element={<Admin />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/privacy" element={<Privacy />} />
+              {/* Fallback to MainLayout for anchor paths or unknown routes */}
+              <Route path="*" element={<MainLayout />} />
             </Routes>
           </div>
         </HashRouter>

@@ -7,11 +7,32 @@ import Contact from './Contact';
 import Footer from './Footer';
 import { useConfig } from '../context/ConfigContext';
 import { getContrastColor } from '../utils/themeUtils';
+import { useLocation } from 'react-router-dom';
 
 export default function MainLayout() {
   const config = useConfig();
   const themeTextColor = useMemo(() => getContrastColor(config.themeColor), [config.themeColor]);
+  const location = useLocation();
   
+  useEffect(() => {
+    // Handle scroll to section based on pathname (for HashRouter paths like /gallery)
+    const sectionId = location.pathname.substring(1);
+    if (sectionId) {
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const offset = 100;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - offset;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
+    }
+  }, [location.pathname]);
+
   useEffect(() => {
     // Prevent right click
     const handleContextMenu = (e: MouseEvent) => {

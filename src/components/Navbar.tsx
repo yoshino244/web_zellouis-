@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, Paintbrush, Instagram, Mail } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,11 +18,36 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'Gallery', href: '#gallery' },
-    { name: 'Commissions', href: '#commissions' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', href: 'home' },
+    { name: 'Gallery', href: 'gallery' },
+    { name: 'Commissions', href: 'commissions' },
+    { name: 'Contact', href: 'contact' },
   ];
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setIsMobileMenuOpen(false);
+
+    if (location.pathname !== '/') {
+      navigate('/#' + href);
+      // The scroll will happen automatically if the browser supports it or via another useEffect
+      return;
+    }
+
+    const element = document.getElementById(href);
+    if (element) {
+      const offset = 100; // Account for fixed navbar
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      // Update route
+      navigate('/' + href);
+    }
+  };
 
   return (
     <nav
@@ -32,11 +60,15 @@ export default function Navbar() {
           isScrolled ? 'shadow-lg shadow-black/20' : ''
         }`}>
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer">
+          <Link 
+            to="/" 
+            className="flex-shrink-0 flex items-center gap-2 cursor-pointer"
+            onClick={(e) => handleNavClick(e as any, 'home')}
+          >
             <span className="font-sans text-2xl tracking-tighter font-bold text-white uppercase">
               ZELLOUIS<span style={{ color: 'var(--theme-color, orange)' }}>.ART</span>
             </span>
-          </div>
+          </Link>
 
           {/* Desktop Nav */}
           <div className="hidden md:block">
@@ -44,7 +76,8 @@ export default function Navbar() {
               {navLinks.map((link) => (
                 <a
                   key={link.name}
-                  href={link.href}
+                  href={`#${link.href}`}
+                  onClick={(e) => handleNavClick(e, link.href)}
                   className="text-gray-300 hover:text-white transition-colors duration-300 px-3 py-2 text-sm font-medium tracking-wide uppercase"
                 >
                   {link.name}
@@ -52,6 +85,7 @@ export default function Navbar() {
               ))}
               <a
                 href="#contact"
+                onClick={(e) => handleNavClick(e, 'contact')}
                 className="px-6 py-2.5 rounded-full text-sm font-bold uppercase tracking-wider transition-colors duration-300 hover:opacity-90"
                 style={{ backgroundColor: 'var(--theme-color, orange)', color: 'var(--theme-text-color, black)' }}
               >
@@ -79,19 +113,27 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-zinc-950 border-b border-white/10"
+            className="md:hidden mt-4 mx-4 bg-zinc-950/90 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden"
           >
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <div className="px-4 py-6 space-y-2">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-3 py-4 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 active:bg-white/10 text-center uppercase tracking-widest border-b border-white/5 last:border-none"
+                  href={`#${link.href}`}
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className="block px-4 py-4 rounded-xl text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 active:bg-white/10 text-center uppercase tracking-widest transition-all"
                 >
                   {link.name}
                 </a>
               ))}
+              <a
+                href="#contact"
+                onClick={(e) => handleNavClick(e, 'contact')}
+                className="block w-full px-4 py-4 rounded-xl text-center text-sm font-bold uppercase tracking-wider transition-all"
+                style={{ backgroundColor: 'var(--theme-color, orange)', color: 'var(--theme-text-color, black)' }}
+              >
+                Let's Talk
+              </a>
             </div>
           </motion.div>
         )}

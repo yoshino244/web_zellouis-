@@ -1,12 +1,37 @@
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import { useConfig } from '../context/ConfigContext';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Hero() {
   const config = useConfig();
+  const location = useLocation();
+  const navigate = useNavigate();
   
   // Create WhatsApp URL
   const whatsappUrl = `https://wa.me/${config.whatsappNumber.replace(/[^0-9]/g, '')}`;
+
+  const handleGalleryClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    
+    if (location.pathname !== '/') {
+      navigate('/#gallery');
+      return;
+    }
+
+    const element = document.getElementById('gallery');
+    if (element) {
+      const offset = 100;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      navigate('/gallery');
+    }
+  };
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-zinc-950 pt-20">
@@ -65,6 +90,7 @@ export default function Hero() {
             </a>
             <a
               href="#gallery"
+              onClick={handleGalleryClick}
               className="inline-flex items-center justify-center gap-2 bg-white/5 backdrop-blur-md text-white border border-white/10 px-8 py-4 rounded-full font-bold uppercase tracking-wider hover:bg-white/10 transition-all duration-300"
             >
               Explore Gallery
